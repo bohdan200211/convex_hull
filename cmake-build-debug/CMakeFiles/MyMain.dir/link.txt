@@ -1,1 +1,0 @@
-/usr/bin/c++.exe -g  -Wl,--enable-auto-import CMakeFiles/MyMain.dir/main.cpp.o  -o MyMain.exe -Wl,--out-implib,libMyMain.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

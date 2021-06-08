@@ -1,9 +1,0 @@
-/cygdrive/d/GitKraken/convex_hull/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/cygdrive/d/GitKraken/convex_hull/cmake-build-debug/CMakeFiles/edit_cache.dir
-/cygdrive/d/GitKraken/convex_hull/cmake-build-debug/include/CMakeFiles/rebuild_cache.dir
-/cygdrive/d/GitKraken/convex_hull/cmake-build-debug/include/CMakeFiles/edit_cache.dir
-/cygdrive/d/GitKraken/convex_hull/cmake-build-debug/src/CMakeFiles/rebuild_cache.dir
-/cygdrive/d/GitKraken/convex_hull/cmake-build-debug/src/CMakeFiles/MyMain.dir
-/cygdrive/d/GitKraken/convex_hull/cmake-build-debug/src/CMakeFiles/edit_cache.dir
-/cygdrive/d/GitKraken/convex_hull/cmake-build-debug/tests/CMakeFiles/rebuild_cache.dir
-/cygdrive/d/GitKraken/convex_hull/cmake-build-debug/tests/CMakeFiles/edit_cache.dir

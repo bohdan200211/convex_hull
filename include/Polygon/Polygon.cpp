@@ -31,14 +31,14 @@ Polygon Polygon::GetConvexHullJarvisAlgorithm() const noexcept {
 
     std::list<Point> result;
 
-    auto tempLeft = std::min_element(m_Points.begin(),
-                                     m_Points.end(),
+    auto tempLeft = std::min_element(m_Points.cbegin(),
+                                     m_Points.cend(),
                                      [](const Point &a, const Point &b) -> bool {
                                          return a.x < b.x;
                                      }
     );
 
-    int l = std::distance(m_Points.begin(), tempLeft);
+    int l = std::distance(m_Points.cbegin(), tempLeft);
     int p = l;
     int q;
 
@@ -57,5 +57,25 @@ Polygon Polygon::GetConvexHullJarvisAlgorithm() const noexcept {
 
     } while (p != l);
 
-    return Polygon(PointContainer(result.begin(), result.end()));
+    return Polygon(PointContainer(result.cbegin(), result.cend()));
+}
+
+bool Polygon::isContain(const Polygon & P) const noexcept {
+    return std::all_of(P.cbegin(),
+                       P.cend(),
+                       [&] (const Point & q) -> bool {
+                           return std::find(m_Points.cbegin(), m_Points.cend(), q)
+                                            != m_Points.cend();
+                       }
+    );
+}
+
+bool Polygon::isEqual(const Polygon & P) const noexcept {
+    return m_Points.size() == P.m_Points.size() && isContain(P);
+}
+
+void Polygon::PrintPolygon() const noexcept {
+    std::copy(m_Points.cbegin(),
+              m_Points.cend(),
+              std::ostream_iterator<Point>(std::cout, "\n"));
 }

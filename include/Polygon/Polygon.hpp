@@ -28,9 +28,15 @@ public:
 
     [[nodiscard]] Polygon GetConvexHullJarvisAlgorithm() const noexcept;
 
-    [[nodiscard]] PointContainer::const_iterator begin() const { return m_Points.begin(); }
+    [[nodiscard]] PointContainer::const_iterator cbegin() const { return m_Points.begin(); }
 
-    [[nodiscard]] PointContainer::const_iterator end() const { return m_Points.end(); }
+    [[nodiscard]] PointContainer::const_iterator cend() const { return m_Points.end(); }
+
+    [[nodiscard]] bool isContain (const Polygon & P) const noexcept;
+
+    [[nodiscard]] bool isEqual (const Polygon & P) const noexcept;
+
+    void PrintPolygon () const noexcept;
 
 private:
     [[nodiscard]] Orientation GetOrientation(Point p, Point q, Point r) const noexcept;

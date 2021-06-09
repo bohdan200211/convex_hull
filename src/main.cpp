@@ -14,9 +14,7 @@ int main() {
 
 
     //Print
-    std::copy(ConvexHull.begin(),
-              ConvexHull.end(),
-              std::ostream_iterator<Point>(std::cout, "\n"));
+    ConvexHull.PrintPolygon();
 
     return 0;
 }

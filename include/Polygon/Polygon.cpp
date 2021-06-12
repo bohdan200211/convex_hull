@@ -38,8 +38,8 @@ Polygon Polygon::GetConvexHullJarvisAlgorithm() const noexcept {
                                      }
     );
 
-    int l = std::distance(m_Points.cbegin(), tempLeft);
-    int p = l;
+    int leftPoint = std::distance(m_Points.cbegin(), tempLeft);
+    int p = leftPoint;
     int q;
 
     do {
@@ -55,7 +55,7 @@ Polygon Polygon::GetConvexHullJarvisAlgorithm() const noexcept {
 
         p = q;
 
-    } while (p != l);
+    } while (p != leftPoint);
 
     return Polygon(PointContainer(result.cbegin(), result.cend()));
 }
@@ -74,8 +74,8 @@ bool Polygon::isEqual(const Polygon & P) const noexcept {
     return m_Points.size() == P.m_Points.size() && isContain(P);
 }
 
-void Polygon::PrintPolygon() const noexcept {
+void Polygon::PrintPolygon(std::ostream & out, const char * delimiter) const noexcept {
     std::copy(m_Points.cbegin(),
               m_Points.cend(),
-              std::ostream_iterator<Point>(std::cout, "\n"));
+              std::ostream_iterator<Point>(out, delimiter));
 }

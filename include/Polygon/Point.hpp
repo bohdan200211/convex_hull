@@ -16,7 +16,7 @@ public:
             : x(0)
             , y(0) {}
 
-    Point(int _x, int _y)
+    Point(double _x, double _y)
             : x(_x)
             , y(_y) {}
 
@@ -34,7 +34,8 @@ public:
 
 
     friend std::ostream & operator<<(std::ostream & out, const Point & p) {
-        out << "("
+        out << "Point"
+            << "("
             << p.x << ", " << p.y
             << ")";
 

@@ -7,9 +7,37 @@
 #include <Polygon.hpp>
 
 TEST_CASE("Jarvis's Algorithm") {
-    Polygon Correct1 ({{3, 0}, {0, 0}, {3, 3}, {0, 3}});
-    Polygon Correct2 ({{-1, -2}, {-3, 1}, {0, 5}, {6, 4}, {8, 1}, {6, -4}});
-    Polygon Correct3 ({{-1, -2}, {-3, 1}, {6, 4}, {8, 1}, {6, -4}});
+    AlgoIterator Correct1 ({
+        {
+            { Point(0, 4), Point(1, 0), Line::LinkType::Solid }
+        },
+        {
+            { Point(1, 0), Point(4, 4), Line::LinkType::Solid }
+        },
+        {
+            { Point(0, 4), Point(4, 4), Line::LinkType::Solid },
+            { Point(0, 4), Point(1, 0), Line::LinkType::Dashed },
+            { Point(1, 0), Point(4, 4), Line::LinkType::Dashed }
+        },
+        {
+            { Point(4, 4), Point(5, 0), Line::LinkType::Solid }
+        },
+        {
+            { Point(5, 0), Point(4, 4), Line::LinkType::Solid }
+        },
+        {
+            { Point(4, 4), Point(1, 0), Line::LinkType::Solid }
+        },
+        {
+            { Point(5, 0), Point(1, 0), Line::LinkType::Solid },
+            { Point(5, 0), Point(4, 4), Line::LinkType::Dashed },
+            { Point(4, 4), Point(1, 0), Line::LinkType::Dashed }
+        },
+        {
+            { Point(1, 0), Point(0, 4), Line::LinkType::Solid }
+        }
+    }
+    );
 
     SUBCASE("test1") {
         Polygon ConvexHull;
@@ -21,7 +49,7 @@ TEST_CASE("Jarvis's Algorithm") {
         });
 
 
-        ConvexHull = P.GetConvexHullJarvisAlgorithm();
+        ConvexHull = P.GetStepsOfJarvisAlgorithm();
 
         CHECK(ConvexHull.isEqual(Correct1));
     }
@@ -37,25 +65,8 @@ TEST_CASE("Jarvis's Algorithm") {
         });
 
 
-        ConvexHull = P.GetConvexHullJarvisAlgorithm();
+        ConvexHull = P.GetStepsOfJarvisAlgorithm();
 
         CHECK(ConvexHull.isEqual(Correct2));
-    }
-
-    SUBCASE("test3") {
-        Polygon ConvexHull;
-
-
-        Polygon P({
-            {-1, -2}, {-3, 1}, {6, 4}, {6, 2},
-            {8, 1}, {6, -4}, {0, 0}, {5, -3},
-            {4, 1}, {1, -2}, {-1, 1}, {1, -1},
-            {7, -1}, {4, -2}
-        });
-
-
-        ConvexHull = P.GetConvexHullJarvisAlgorithm();
-
-        CHECK(ConvexHull.isEqual(Correct3));
     }
 }

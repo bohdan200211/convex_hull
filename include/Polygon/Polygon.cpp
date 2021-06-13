@@ -35,7 +35,7 @@ Polygon::Orientation Polygon::GetOrientation(Point p, Point q, Point r) const no
 
 AlgoIterator Polygon::GetStepsOfJarvisAlgorithm() const noexcept {
     const size_t n = m_Points.size();
-    std::list<std::list<Step>> AlgorithmSteps;
+    std::list<std::list<Line>> AlgorithmSteps;
 
 
 //    bool isUpperPartFinished = false;
@@ -51,10 +51,10 @@ AlgoIterator Polygon::GetStepsOfJarvisAlgorithm() const noexcept {
     currentPoint = currentPoint + 1;
 
     while (currentPoint < n) {
-        std::list<Step> lstOfLines1;
+        std::list<Line> lstOfLines1;
         lstOfLines1.emplace_back(m_Points[ConvexHull[stackIterator]],
-                                m_Points[currentPoint],
-                                Step::LinkType::Solid);
+                                 m_Points[currentPoint],
+                                 Line::LinkType::Solid);
         AlgorithmSteps.push_back(lstOfLines1);
 
 
@@ -66,18 +66,18 @@ AlgoIterator Polygon::GetStepsOfJarvisAlgorithm() const noexcept {
                                  m_Points[ConvexHull[stackIterator - 1]])
                                  == Orientation::Counterclock) {
 
-            std::list<Step> lstOfLines2;
+            std::list<Line> lstOfLines2;
             lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 2]],
                                      m_Points[ConvexHull[stackIterator]],
-                                     Step::LinkType::Solid);
+                                     Line::LinkType::Solid);
 
             lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 2]],
                                      m_Points[ConvexHull[stackIterator - 1]],
-                                     Step::LinkType::Dashed);
+                                     Line::LinkType::Dashed);
 
             lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 1]],
                                      m_Points[ConvexHull[stackIterator]],
-                                     Step::LinkType::Dashed);
+                                     Line::LinkType::Dashed);
             AlgorithmSteps.push_back(lstOfLines2);
 
             ConvexHull[stackIterator - 1] = ConvexHull[stackIterator];
@@ -92,10 +92,10 @@ AlgoIterator Polygon::GetStepsOfJarvisAlgorithm() const noexcept {
 
     currentPoint = currentPoint - 2;
     while (currentPoint > -1) {
-        std::list<Step> lstOfLines1;
+        std::list<Line> lstOfLines1;
         lstOfLines1.emplace_back(m_Points[ConvexHull[stackIterator]],
                                  m_Points[currentPoint],
-                                 Step::LinkType::Solid);
+                                 Line::LinkType::Solid);
         AlgorithmSteps.push_back(lstOfLines1);
 
 
@@ -107,18 +107,18 @@ AlgoIterator Polygon::GetStepsOfJarvisAlgorithm() const noexcept {
                                  m_Points[ConvexHull[stackIterator - 1]])
                                  == Orientation::Counterclock) {
 
-            std::list<Step> lstOfLines2;
+            std::list<Line> lstOfLines2;
             lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 2]],
                                      m_Points[ConvexHull[stackIterator]],
-                                     Step::LinkType::Solid);
+                                     Line::LinkType::Solid);
 
             lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 2]],
                                      m_Points[ConvexHull[stackIterator - 1]],
-                                     Step::LinkType::Dashed);
+                                     Line::LinkType::Dashed);
 
             lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 1]],
                                      m_Points[ConvexHull[stackIterator]],
-                                     Step::LinkType::Dashed);
+                                     Line::LinkType::Dashed);
             AlgorithmSteps.push_back(lstOfLines2);
 
             ConvexHull[stackIterator - 1] = ConvexHull[stackIterator];

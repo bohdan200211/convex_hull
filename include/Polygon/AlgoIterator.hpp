@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Step.hpp"
+#include "Line.hpp"
 
 #include <list>
 #include <iterator>
@@ -15,11 +15,11 @@ public:
     template <class T>
     using container_type = std::list<T>;
 
-    using data_type = Step;
+    using data_type = Line;
 
 
-    explicit AlgoIterator(container_type<container_type<data_type>> & _container)
-            : m_Data(std::move(_container)) {
+    explicit AlgoIterator(const container_type<container_type<data_type>> & _container)
+            : m_Data(_container) {
         m_StepsIterator = m_Data.begin();
         m_LinesIterator = m_StepsIterator->begin();
     }

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <sstream>
 #include "Point.hpp"
 
 class Line {
@@ -30,5 +31,19 @@ public:
             << " },";
 
         return out;
+    }
+
+    std::string to_json () const noexcept {
+        std::stringstream out;
+        out << "{"
+            << p1.to_json() << ","
+            << p2.to_json() << ","
+            << "\"isSolid\"" << ":"
+            << (type == Line::LinkType::Solid
+                ? 1
+                : 0)
+            << "}";
+
+        return out.str();
     }
 };

@@ -22,13 +22,13 @@ int main() {
     while (!itr.IsAlgoDone()) {
         itr.FirstLine();
 
-        std::cout << "{" << std::endl;
+//        std::cout << "[" << std::endl;
         while (!itr.IsStepDone()) {
-            std::cout << *itr.CurrentLine() << std::endl;
+            std::cout << itr.CurrentLine()->to_json() << std::endl;
 
             itr.NextLine();
         }
-        std::cout << "}," << std::endl;
+//        std::cout << "]," << std::endl;
 
         itr.NextStep();
     }

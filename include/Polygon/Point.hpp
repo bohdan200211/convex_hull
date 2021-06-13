@@ -46,6 +46,17 @@ public:
         return  lhs.x == rhs.x
                 & lhs.y == rhs.y;
     }
+
+    std::string to_json () const noexcept {
+        std::stringstream out;
+        out << "{"
+            << "\"x\"" << ":" << x
+            << ","
+            << "\"y\"" << ":" << y
+            << " }";
+
+        return out.str();
+    }
 };
 
 

@@ -7,16 +7,23 @@
 Polygon::Polygon() noexcept
         : m_Points({}) {}
 
-Polygon::Polygon(const PointContainer &_arr) {
+Polygon::Polygon(const PointContainer & _arr) {
     if (_arr.size() < 3) {
         throw std::runtime_error("Must be at least 3 points");
     }
 
     m_Points = _arr;
+
+    std::sort(m_Points.begin(),
+              m_Points.end(),
+              [] (const Point & p1, const Point & p2) -> bool {
+                  return p1.x < p2.x;
+              }
+    );
 }
 
 Polygon::Orientation Polygon::GetOrientation(Point p, Point q, Point r) const noexcept {
-    int val = (q.y - p.y) * (r.x - q.x) -
+    double val = (q.y - p.y) * (r.x - q.x) -
               (q.x - p.x) * (r.y - q.y);
 
     return (val == 0)
@@ -26,38 +33,104 @@ Polygon::Orientation Polygon::GetOrientation(Point p, Point q, Point r) const no
              : Orientation::Counterclock;
 }
 
-Polygon Polygon::GetConvexHullJarvisAlgorithm() const noexcept {
+AlgoIterator Polygon::GetStepsOfJarvisAlgorithm() const noexcept {
     const size_t n = m_Points.size();
+    std::list<std::list<Step>> AlgorithmSteps;
 
-    std::list<Point> result;
 
-    auto tempLeft = std::min_element(m_Points.cbegin(),
-                                     m_Points.cend(),
-                                     [](const Point &a, const Point &b) -> bool {
-                                         return a.x < b.x;
-                                     }
-    );
+//    bool isUpperPartFinished = false;
+    int currentPoint = 0;
 
-    int leftPoint = std::distance(m_Points.cbegin(), tempLeft);
-    int p = leftPoint;
-    int q;
+    //можна використати модифікований стек
+    std::vector<int> ConvexHull(n + 1);
+    int stackIterator = -1;
 
-    do {
-        result.push_back(m_Points[p]);
 
-        q = (p + 1) % n;
 
-        for (int i = 0; i < n; ++i) {
-            if (GetOrientation(m_Points[p], m_Points[i], m_Points[q]) == Orientation::Counterclock) {
-                q = i;
-            }
+    ConvexHull[++stackIterator] = currentPoint;
+    currentPoint = currentPoint + 1;
+
+    while (currentPoint < n) {
+        std::list<Step> lstOfLines1;
+        lstOfLines1.emplace_back(m_Points[ConvexHull[stackIterator]],
+                                m_Points[currentPoint],
+                                Step::LinkType::Solid);
+        AlgorithmSteps.push_back(lstOfLines1);
+
+
+        ConvexHull[++stackIterator] = currentPoint;
+
+        while (stackIterator > 1
+               && GetOrientation(m_Points[ConvexHull[stackIterator]],
+                                 m_Points[ConvexHull[stackIterator - 2]],
+                                 m_Points[ConvexHull[stackIterator - 1]])
+                                 == Orientation::Counterclock) {
+
+            std::list<Step> lstOfLines2;
+            lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 2]],
+                                     m_Points[ConvexHull[stackIterator]],
+                                     Step::LinkType::Solid);
+
+            lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 2]],
+                                     m_Points[ConvexHull[stackIterator - 1]],
+                                     Step::LinkType::Dashed);
+
+            lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 1]],
+                                     m_Points[ConvexHull[stackIterator]],
+                                     Step::LinkType::Dashed);
+            AlgorithmSteps.push_back(lstOfLines2);
+
+            ConvexHull[stackIterator - 1] = ConvexHull[stackIterator];
+            --stackIterator;
         }
+        currentPoint = currentPoint + 1;
+    }
 
-        p = q;
 
-    } while (p != leftPoint);
 
-    return Polygon(PointContainer(result.cbegin(), result.cend()));
+    int sizeOfUpperHull = stackIterator;
+
+    currentPoint = currentPoint - 2;
+    while (currentPoint > -1) {
+        std::list<Step> lstOfLines1;
+        lstOfLines1.emplace_back(m_Points[ConvexHull[stackIterator]],
+                                 m_Points[currentPoint],
+                                 Step::LinkType::Solid);
+        AlgorithmSteps.push_back(lstOfLines1);
+
+
+        ConvexHull[++stackIterator] = currentPoint;
+
+        while (stackIterator - sizeOfUpperHull > 1
+               && GetOrientation(m_Points[ConvexHull[stackIterator]],
+                                 m_Points[ConvexHull[stackIterator - 2]],
+                                 m_Points[ConvexHull[stackIterator - 1]])
+                                 == Orientation::Counterclock) {
+
+            std::list<Step> lstOfLines2;
+            lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 2]],
+                                     m_Points[ConvexHull[stackIterator]],
+                                     Step::LinkType::Solid);
+
+            lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 2]],
+                                     m_Points[ConvexHull[stackIterator - 1]],
+                                     Step::LinkType::Dashed);
+
+            lstOfLines2.emplace_back(m_Points[ConvexHull[stackIterator - 1]],
+                                     m_Points[ConvexHull[stackIterator]],
+                                     Step::LinkType::Dashed);
+            AlgorithmSteps.push_back(lstOfLines2);
+
+            ConvexHull[stackIterator - 1] = ConvexHull[stackIterator];
+            --stackIterator;
+        }
+        currentPoint = currentPoint - 1;
+    }
+
+
+
+    return AlgoIterator(AlgorithmSteps);
+//    return Polygon(PointContainer(result.cbegin(), result.cend()));
 }
 
 bool Polygon::isContain(const Polygon & P) const noexcept {

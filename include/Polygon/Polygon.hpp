@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Point.hpp"
+#include "AlgoIterator.hpp"
 
 #include <vector>
 #include <stdexcept>
@@ -26,7 +26,7 @@ public:
 
     explicit Polygon(const PointContainer &_arr);
 
-    [[nodiscard]] Polygon GetConvexHullJarvisAlgorithm() const noexcept;
+    void PrintPolygon (std::ostream & out, const char * delimiter) const noexcept;
 
     [[nodiscard]] bool isContain (const Polygon & P) const noexcept;
 
@@ -36,7 +36,7 @@ public:
 
     [[nodiscard]] PointContainer::const_iterator cend() const { return m_Points.end(); }
 
-    void PrintPolygon (std::ostream & out, const char * delimiter) const noexcept;
+    [[nodiscard]] AlgoIterator GetStepsOfJarvisAlgorithm() const noexcept;
 
 private:
     [[nodiscard]] Orientation GetOrientation(Point p, Point q, Point r) const noexcept;

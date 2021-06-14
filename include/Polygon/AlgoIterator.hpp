@@ -8,6 +8,7 @@
 
 #include <list>
 #include <iterator>
+#include <sstream>
 
 
 class AlgoIterator {
@@ -34,6 +35,32 @@ public:
     void NextLine()   noexcept { ++m_LinesIterator; }
     bool IsStepDone() noexcept { return m_LinesIterator == m_StepsIterator->end(); }
 
+    std::string to_json() noexcept {
+        std::stringstream result;
+        FirstStep();
+        result << "{\"steps\":[";
+        while (!IsAlgoDone()) {
+            FirstLine();
+            result << "{\"lines\":[";
+            while (!IsStepDone()) {
+                result << CurrentLine()->to_json();
+
+                NextLine();
+                if(!IsStepDone()) {
+                    result << ",";
+                }
+            }
+
+            result << "]}";
+            NextStep();
+            if(!IsAlgoDone()) {
+                result << ",";
+            }
+        }
+        result << "]}";
+
+        return result.str();
+    }
 
     container_type<data_type>::iterator CurrentLine() { return m_LinesIterator; }
 

@@ -36,7 +36,9 @@ public:
     std::string to_json () const noexcept {
         std::stringstream out;
         out << "{"
+            << "\"startPoint\":"
             << p1.to_json() << ","
+            << "\"endPoint\":"
             << p2.to_json() << ","
             << "\"isSolid\"" << ":"
             << (type == Line::LinkType::Solid
